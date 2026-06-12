@@ -1,8 +1,9 @@
-# dp-h1-performance-to-plan
+# Delivery Predictions Hub
 
-Live H1 Performance to Plan dashboard for Delivery Predictions. Fetches each H1 intended outcome's underlying Vault project on page load and renders the Payments-style phase breakdown.
+H1 Performance to Plan dashboard for Delivery Predictions. Static JSON snapshot of Vault projects, modeled on the PCB Hub pattern. Refresh by running `./scripts/refresh.sh`.
 
-**Live URL (once deployed):** `https://dp-h1-performance-to-plan.quick.shopify.io`
+**Live URL:** `https://delivery-predictions-hub.quick.shopify.io`
+**GitHub:** `https://github.com/ryleegrace1/delivery-predictions-hub`
 
 ## Files
 
