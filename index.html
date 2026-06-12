@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delivery Predictions — H1 Performance to Plan</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <h1>Delivery Predictions</h1>
+        <p class="subtitle">H1 Performance to Plan</p>
+      </div>
+      <div class="meta">
+        <div id="last-updated" class="last-updated">Loading…</div>
+        <a class="vault-link" href="https://vault.shopify.io/teams/2836-Delivery-Predictions" target="_blank" rel="noopener">Vault team →</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="aggregate" id="aggregate">
+      <div class="donut-wrap">
+        <svg class="donut" viewBox="0 0 120 120" aria-hidden="true">
+          <circle cx="60" cy="60" r="50" class="donut-track"></circle>
+          <circle cx="60" cy="60" r="50" class="donut-fill" id="donut-fill"></circle>
+        </svg>
+        <div class="donut-center">
+          <div class="donut-pct" id="donut-pct">—</div>
+          <div class="donut-label">In Progress or Done</div>
+        </div>
+      </div>
+      <div class="aggregate-info">
+        <h2>Portfolio</h2>
+        <p class="aggregate-sub" id="aggregate-sub">Loading projects from Vault…</p>
+        <div class="phase-bar" id="phase-bar"></div>
+        <div class="phase-legend" id="phase-legend"></div>
+      </div>
+    </section>
+
+    <section class="bets" id="bets">
+      <h2 class="section-title">By bet</h2>
+      <div id="bets-container"></div>
+    </section>
+
+    <section class="off-vault">
+      <h2 class="section-title">Off Vault</h2>
+      <p class="off-vault-sub">Intended H1 outcomes with no GSD project. These are invisible to SLT until scoped.</p>
+      <div id="off-vault-list"></div>
+    </section>
+
+    <section class="paused">
+      <h2 class="section-title">Paused / Stopped since plan</h2>
+      <p class="paused-sub">Deliberate pruning by the team — not reflected in the original outcomes doc.</p>
+      <div id="paused-list"></div>
+    </section>
+
+    <footer>
+      <p>
+        Built from <a href="https://vault.shopify.io" target="_blank" rel="noopener">vault.shopify.io</a>.
+        Data refreshes on page load. Owner: <a href="https://vault.shopify.io/users/27099-Rylee-Grace" target="_blank" rel="noopener">Rylee Grace</a>.
+      </p>
+      <p class="footer-detail">Source: <a id="repo-link" href="#" target="_blank" rel="noopener">GitHub</a> · Plan: <a href="https://docs.google.com/document/d/18v4IaWjfv9nRX_mbOxTRHPaKtgMYPD4xoqaC-zkmGNU/edit" target="_blank" rel="noopener">H1 Performance Doc</a></p>
+    </footer>
+  </main>
+
+  <script src="plan.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
