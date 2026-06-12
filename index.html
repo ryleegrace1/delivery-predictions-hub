@@ -1,72 +1,359 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Delivery Predictions — H1 Performance to Plan</title>
-  <link rel="stylesheet" href="style.css">
+<script>(function(){var s=localStorage.getItem('dp-theme'),d=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',s||d);})();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>H1 Performance to Plan — Delivery Predictions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg-primary:#f6f6f7;--bg-card:#fff;--bg-input:#f3f3f6;--border:rgba(0,0,0,0.08);
+    --text-primary:#1a1a1f;--text-secondary:#6b6b76;--text-muted:#9a9aa4;--accent:#0088FF;
+    --radius:12px;--font-sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    --shadow-card:0 1px 3px rgba(0,0,0,0.06);
+    --phase-planned:#94a3b8;--phase-off-vault:#d1d5db;--phase-prototype:#a855f7;
+    --phase-build:#f59e0b;--phase-observe:#06b6d4;--phase-release:#3b82f6;--phase-done:#374151;
+    --phase-paused:#f97316;--phase-stopped:#6b7280;
+    --risk:#dc2626;
+  }
+  [data-theme="dark"]{
+    --bg-primary:#101114;--bg-card:#202227;--bg-input:#292C32;--border:rgba(252,252,253,0.08);
+    --text-primary:#FCFCFD;--text-secondary:#9DA1AE;--text-muted:#676D7E;
+    --shadow-card:0 1px 4px rgba(0,0,0,0.4);
+  }
+  body{background:var(--bg-primary);color:var(--text-primary);font-family:var(--font-sans);font-size:13px;min-height:100vh;padding:32px 24px}
+  .container{max-width:1200px;margin:0 auto}
+  .page-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px;gap:24px;flex-wrap:wrap}
+  .page-title{font-size:24px;font-weight:700;letter-spacing:-0.02em}
+  .page-subtitle{font-size:13px;color:var(--text-muted);margin-top:4px}
+  .header-meta{font-size:12px;color:var(--text-muted);text-align:right}
+  .header-meta a{color:var(--text-secondary);text-decoration:none}
+  .header-meta a:hover{color:var(--text-primary)}
+  .dark-toggle{background:none;border:1px solid var(--border);color:var(--text-secondary);padding:6px 10px;border-radius:6px;cursor:pointer;font-size:12px;margin-top:8px}
+  .dark-toggle:hover{color:var(--text-primary);border-color:var(--text-muted)}
+
+  .overall-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px;box-shadow:var(--shadow-card)}
+  .overall-top{display:flex;align-items:center;gap:24px;margin-bottom:20px;flex-wrap:wrap}
+  .overall-title{font-size:18px;font-weight:700}
+  .overall-sub{font-size:12px;color:var(--text-muted);margin-top:4px}
+
+  .progress-ring-wrap{position:relative;width:64px;height:64px;flex-shrink:0}
+  .progress-ring-bg{fill:none;stroke:var(--border);stroke-width:5}
+  .progress-ring-fg{fill:none;stroke-width:5;stroke-linecap:round;transform:rotate(-90deg);transform-origin:center;transition:stroke-dashoffset 0.6s ease}
+  .progress-pct{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700}
+  .progress-label{font-size:9px;color:var(--text-muted);text-align:center;margin-top:2px;text-transform:uppercase;letter-spacing:0.06em}
+
+  .phase-bar-section{margin-bottom:0}
+  .phase-bar-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:8px}
+  .phase-bar-track{display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--bg-input);gap:1px}
+  .phase-bar-seg{height:100%;transition:width 0.4s ease;min-width:0}
+  .phase-bar-legend{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:10px;font-size:11px;color:var(--text-secondary)}
+  .phase-legend-item{display:flex;align-items:center;gap:6px}
+  .phase-legend-dot{width:8px;height:8px;border-radius:2px}
+
+  .bet-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px;box-shadow:var(--shadow-card);overflow:hidden}
+  .bet-header{display:grid;grid-template-columns:6px 40px 1fr auto auto;gap:12px;align-items:center;padding:16px 20px;cursor:pointer;transition:background 0.15s}
+  .bet-header:hover{background:var(--bg-input)}
+  .bet-accent{width:6px;height:32px;border-radius:3px;align-self:center}
+  .bet-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px}
+  .bet-info .bet-title{font-size:15px;font-weight:600}
+  .bet-info .bet-blurb{font-size:11px;color:var(--text-muted);margin-top:2px}
+  .bet-badge{font-size:11px;padding:3px 8px;border-radius:10px;background:var(--bg-input);color:var(--text-secondary)}
+  .bet-chevron{color:var(--text-muted);transition:transform 0.2s}
+  .bet-card.expanded .bet-chevron{transform:rotate(180deg)}
+
+  .bet-summary{padding:0 20px 20px;border-top:1px solid var(--border)}
+  .phase-counts{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin:16px 0}
+  .phase-count-box{background:var(--bg-input);border-radius:8px;padding:10px;text-align:center}
+  .phase-count-num{font-size:20px;font-weight:700;line-height:1}
+  .phase-count-label{font-size:9px;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-top:4px}
+
+  .bet-body{max-height:0;overflow:hidden;transition:max-height 0.3s ease}
+  .bet-card.expanded .bet-body{max-height:2000px}
+  .projects-table{width:100%;border-collapse:collapse;margin:0;font-size:12px}
+  .projects-table th{text-align:left;padding:10px 16px;background:var(--bg-input);color:var(--text-muted);font-size:10px;text-transform:uppercase;letter-spacing:0.06em;font-weight:600;border-bottom:1px solid var(--border)}
+  .projects-table td{padding:12px 16px;border-bottom:1px solid var(--border);vertical-align:top}
+  .projects-table tr:last-child td{border-bottom:none}
+  .projects-table tr.at-risk{background:rgba(220,38,38,0.04)}
+  .projects-table tr.paused{background:rgba(249,115,22,0.04)}
+  .proj-name-cell a{color:var(--text-primary);text-decoration:none;font-weight:500}
+  .proj-name-cell a:hover{text-decoration:underline}
+  .off-vault-name{color:var(--text-muted);font-style:italic}
+  .phase-pill{display:inline-block;padding:3px 10px;border-radius:10px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:#fff;white-space:nowrap}
+  .phase-pill.prototype{background:var(--phase-prototype)}
+  .phase-pill.build{background:var(--phase-build)}
+  .phase-pill.observe{background:var(--phase-observe)}
+  .phase-pill.release{background:var(--phase-release)}
+  .phase-pill.done{background:var(--phase-done)}
+  .phase-pill.paused{background:var(--phase-paused)}
+  .phase-pill.stopped{background:var(--phase-stopped)}
+  .phase-pill.off-vault{background:var(--phase-off-vault);color:#475569}
+  .status-risk{color:var(--risk);font-weight:600;font-size:11px}
+  .priority-tag{display:inline-block;font-size:10px;color:var(--text-muted);font-weight:600}
+  .note-cell{font-size:11px;color:var(--text-muted);font-style:italic;margin-top:4px}
+
+  .paused-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;box-shadow:var(--shadow-card)}
+  .paused-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--text-muted);margin-bottom:4px}
+  .paused-sub{font-size:12px;color:var(--text-muted);margin-bottom:16px}
+  .paused-list{display:flex;flex-direction:column;gap:6px}
+  .paused-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--bg-input);border-radius:8px;font-size:12px;gap:12px;flex-wrap:wrap}
+
+  .empty-state{padding:40px;text-align:center;color:var(--text-muted)}
+  .loading-spinner{display:inline-block;width:12px;height:12px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite;vertical-align:middle;margin-right:6px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  footer{margin-top:32px;padding-top:16px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted);text-align:center}
+  footer a{color:var(--text-secondary)}
+</style>
 </head>
 <body>
-  <header class="hero">
-    <div class="hero-inner">
+  <div class="container">
+    <div class="page-header">
       <div>
-        <h1>Delivery Predictions</h1>
-        <p class="subtitle">H1 Performance to Plan</p>
+        <div class="page-title">H1 Performance to Plan</div>
+        <div class="page-subtitle">Delivery Predictions · <span id="header-count">—</span></div>
       </div>
-      <div class="meta">
-        <div id="last-updated" class="last-updated">Loading…</div>
-        <a class="vault-link" href="https://vault.shopify.io/teams/2836-Delivery-Predictions" target="_blank" rel="noopener">Vault team →</a>
+      <div class="header-meta">
+        <div id="last-updated">—</div>
+        <a href="https://vault.shopify.io/teams/2836-Delivery-Predictions" target="_blank" rel="noopener">Vault team →</a>
+        <br>
+        <a href="https://docs.google.com/document/d/1tRi8_tOGb0abDxwNWUbHrZpY5_ukUYaaFoSlGETv68o/edit" target="_blank" rel="noopener">H1 Plan doc →</a>
+        <br>
+        <button class="dark-toggle" id="dark-toggle"><i class="fas fa-moon"></i></button>
       </div>
     </div>
-  </header>
 
-  <main>
-    <section class="aggregate" id="aggregate">
-      <div class="donut-wrap">
-        <svg class="donut" viewBox="0 0 120 120" aria-hidden="true">
-          <circle cx="60" cy="60" r="50" class="donut-track"></circle>
-          <circle cx="60" cy="60" r="50" class="donut-fill" id="donut-fill"></circle>
-        </svg>
-        <div class="donut-center">
-          <div class="donut-pct" id="donut-pct">—</div>
-          <div class="donut-label">In Progress or Done</div>
-        </div>
-      </div>
-      <div class="aggregate-info">
-        <h2>Portfolio</h2>
-        <p class="aggregate-sub" id="aggregate-sub">Loading projects from Vault…</p>
-        <div class="phase-bar" id="phase-bar"></div>
-        <div class="phase-legend" id="phase-legend"></div>
-      </div>
-    </section>
-
-    <section class="bets" id="bets">
-      <h2 class="section-title">By bet</h2>
-      <div id="bets-container"></div>
-    </section>
-
-    <section class="off-vault">
-      <h2 class="section-title">Off Vault</h2>
-      <p class="off-vault-sub">Intended H1 outcomes with no GSD project. These are invisible to SLT until scoped.</p>
-      <div id="off-vault-list"></div>
-    </section>
-
-    <section class="paused">
-      <h2 class="section-title">Paused / Stopped since plan</h2>
-      <p class="paused-sub">Deliberate pruning by the team — not reflected in the original outcomes doc.</p>
-      <div id="paused-list"></div>
-    </section>
+    <div id="content">
+      <div class="empty-state"><span class="loading-spinner"></span>Loading data…</div>
+    </div>
 
     <footer>
-      <p>
-        Built from <a href="https://vault.shopify.io" target="_blank" rel="noopener">vault.shopify.io</a>.
-        Data refreshes on page load. Owner: <a href="https://vault.shopify.io/users/27099-Rylee-Grace" target="_blank" rel="noopener">Rylee Grace</a>.
-      </p>
-      <p class="footer-detail">Source: <a id="repo-link" href="#" target="_blank" rel="noopener">GitHub</a> · Plan: <a href="https://docs.google.com/document/d/18v4IaWjfv9nRX_mbOxTRHPaKtgMYPD4xoqaC-zkmGNU/edit" target="_blank" rel="noopener">H1 Performance Doc</a></p>
+      <p>Static snapshot. Run <code>./scripts/refresh.sh</code> to rebuild <code>data/projects.json</code> from Vault, commit, push.</p>
     </footer>
-  </main>
+  </div>
 
-  <script src="plan.js"></script>
-  <script src="app.js"></script>
+<script>
+const PHASE_ORDER = ['off-vault','prototype','build','observe','release','done'];
+const PHASE_LABELS = {'off-vault':'Off Vault','prototype':'Prototype','build':'Build','observe':'Observe','release':'Release','done':'Done','paused':'Paused','stopped':'Stopped'};
+const PHASE_COLORS = {
+  'off-vault':'#d1d5db','prototype':'#a855f7','build':'#f59e0b',
+  'observe':'#06b6d4','release':'#3b82f6','done':'#374151',
+  'paused':'#f97316','stopped':'#6b7280'
+};
+const IN_FLIGHT = new Set(['prototype','build','observe','release','done']);
+
+let DATA = null;
+
+async function load() {
+  try {
+    const res = await fetch('data/projects.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    DATA = await res.json();
+    render();
+  } catch (e) {
+    document.getElementById('content').innerHTML = `<div class="empty-state">Failed to load: ${e.message}</div>`;
+  }
+}
+
+function progressRing(pct, color) {
+  const r = 26, c = 2 * Math.PI * r;
+  const offset = c - (pct/100) * c;
+  return `<div style="display:flex;flex-direction:column;align-items:center;">
+    <div class="progress-ring-wrap">
+      <svg width="64" height="64" viewBox="0 0 64 64">
+        <circle class="progress-ring-bg" cx="32" cy="32" r="${r}"/>
+        <circle class="progress-ring-fg" cx="32" cy="32" r="${r}" stroke="${color}" stroke-dasharray="${c}" stroke-dashoffset="${offset}"/>
+      </svg>
+      <span class="progress-pct">${Math.round(pct)}%</span>
+    </div>
+    <div class="progress-label">In Progress or Done</div>
+  </div>`;
+}
+
+function phaseBar(counts, total) {
+  const segs = PHASE_ORDER.filter(p => counts[p] > 0).map(p => {
+    const w = (counts[p] / total) * 100;
+    return `<div class="phase-bar-seg" style="width:${w}%;background:${PHASE_COLORS[p]}" title="${PHASE_LABELS[p]}: ${counts[p]}"></div>`;
+  }).join('');
+  const legend = PHASE_ORDER.filter(p => counts[p] > 0).map(p =>
+    `<div class="phase-legend-item"><div class="phase-legend-dot" style="background:${PHASE_COLORS[p]}"></div>${PHASE_LABELS[p]} (${counts[p]})</div>`
+  ).join('');
+  return { segs, legend };
+}
+
+function countPhases(projects) {
+  const counts = {};
+  PHASE_ORDER.forEach(p => counts[p] = 0);
+  projects.forEach(p => {
+    const ph = counts.hasOwnProperty(p.phase) ? p.phase : 'off-vault';
+    counts[ph]++;
+  });
+  return counts;
+}
+
+function inFlightCount(projects) {
+  return projects.filter(p => IN_FLIGHT.has(p.phase)).length;
+}
+
+function projectRow(p) {
+  const vaultUrl = p.vaultId ? `https://vault.shopify.io/projects/${p.vaultId}` : null;
+  const name = vaultUrl
+    ? `<a href="${vaultUrl}" target="_blank" rel="noopener">${p.name}</a>`
+    : `<span class="off-vault-name">${p.name}</span>`;
+  const id = p.vaultId ? `<span class="priority-tag">#${p.vaultId}</span>` : '';
+  const note = p.note ? `<div class="note-cell">${p.note}</div>` : '';
+  const rowClass = p.status === 'at_risk' ? 'at-risk' : (p.phase === 'paused' ? 'paused' : '');
+  const statusCell = p.status === 'at_risk'
+    ? `<span class="status-risk">🔴 AT RISK</span>`
+    : p.phase === 'paused' ? `<span style="color:var(--phase-paused);font-weight:600;font-size:11px">⏸ PAUSED</span>`
+    : `<span style="color:var(--text-muted);font-size:11px">${(p.status || '').replace(/_/g,' ')}</span>`;
+  return `<tr class="${rowClass}">
+    <td class="proj-name-cell">${name} ${id}${note}</td>
+    <td><span class="priority-tag">${p.priority || '—'}</span></td>
+    <td style="color:var(--text-secondary);font-size:11px">${p.owner || '—'}</td>
+    <td><span class="phase-pill ${p.phase}">${PHASE_LABELS[p.phase] || p.phase}</span></td>
+    <td>${statusCell}</td>
+    <td style="color:var(--text-muted);font-size:11px">${p.shipping || '—'}</td>
+  </tr>`;
+}
+
+function render() {
+  const projects = DATA.projects;
+  const bets = DATA.bets;
+
+  document.getElementById('header-count').textContent = `${projects.length} H1 intended outcomes`;
+  document.getElementById('last-updated').textContent = `Updated ${DATA.lastUpdated}`;
+
+  // Aggregate
+  const allCounts = countPhases(projects);
+  const allInFlight = inFlightCount(projects);
+  const allPct = (allInFlight / projects.length) * 100;
+  const allBar = phaseBar(allCounts, projects.length);
+
+  let html = `
+    <div class="overall-card">
+      <div class="overall-top">
+        ${progressRing(allPct, '#0088FF')}
+        <div style="flex:1;min-width:200px">
+          <div class="overall-title">Delivery Predictions</div>
+          <div class="overall-sub">H1 Performance to Plan · ${projects.length} intended outcomes · <strong>${allInFlight}</strong> in flight or done · <strong>${allCounts['off-vault']}</strong> off Vault</div>
+        </div>
+      </div>
+      <div class="phase-bar-section">
+        <div class="phase-bar-label">Aggregate Phase Breakdown</div>
+        <div class="phase-bar-track">${allBar.segs}</div>
+        <div class="phase-bar-legend">${allBar.legend}</div>
+      </div>
+    </div>
+  `;
+
+  // Per-bet
+  bets.forEach((bet, idx) => {
+    const betProjects = projects.filter(p => p.bet === bet.id);
+    if (!betProjects.length) return;
+    const counts = countPhases(betProjects);
+    const inflight = inFlightCount(betProjects);
+    const pct = (inflight / betProjects.length) * 100;
+    const bar = phaseBar(counts, betProjects.length);
+
+    const countBoxes = PHASE_ORDER.map(ph => `
+      <div class="phase-count-box">
+        <div class="phase-count-num" style="color:${PHASE_COLORS[ph]}">${counts[ph]}</div>
+        <div class="phase-count-label">${PHASE_LABELS[ph]}</div>
+      </div>
+    `).join('');
+
+    // Sort: at_risk first, then by phase order, then by priority
+    const sorted = [...betProjects].sort((a,b) => {
+      if (a.status === 'at_risk' && b.status !== 'at_risk') return -1;
+      if (b.status === 'at_risk' && a.status !== 'at_risk') return 1;
+      const phaseIdx = ph => PHASE_ORDER.indexOf(ph);
+      return phaseIdx(b.phase) - phaseIdx(a.phase);
+    });
+
+    const rows = sorted.map(projectRow).join('');
+
+    html += `
+      <div class="bet-card expanded" data-bet="${idx}">
+        <div class="bet-header" onclick="toggleBet(${idx})">
+          <div class="bet-accent" style="background:${bet.color}"></div>
+          <div class="bet-icon" style="background:${bet.color}22;color:${bet.color}">${bet.icon}</div>
+          <div class="bet-info">
+            <div class="bet-title">${bet.title}</div>
+            <div class="bet-blurb">${bet.blurb}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            ${progressRing(pct, bet.color)}
+            <span class="bet-badge">${betProjects.length} outcomes</span>
+          </div>
+          <i class="fas fa-chevron-down bet-chevron"></i>
+        </div>
+        <div class="bet-summary">
+          <div class="phase-counts">${countBoxes}</div>
+          <div class="phase-bar-section">
+            <div class="phase-bar-label">Phase Breakdown</div>
+            <div class="phase-bar-track">${bar.segs}</div>
+            <div class="phase-bar-legend">${bar.legend}</div>
+          </div>
+        </div>
+        <div class="bet-body">
+          <table class="projects-table">
+            <thead><tr><th>Project / Outcome</th><th>Pri</th><th>Owner</th><th>Phase</th><th>Status</th><th>Ship</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>
+      </div>
+    `;
+  });
+
+  // Paused/Stopped
+  if (DATA.paused && DATA.paused.length) {
+    html += `
+      <div class="paused-card">
+        <div class="paused-title">⏸ Paused / Stopped Since Plan Inception</div>
+        <div class="paused-sub">Deliberate pruning by the team — not reflected in the original outcomes doc.</div>
+        <div class="paused-list">
+          ${DATA.paused.map(p => `
+            <div class="paused-item">
+              <div>
+                <a href="https://vault.shopify.io/projects/${p.vaultId}" target="_blank" rel="noopener" style="color:var(--text-primary);text-decoration:none">${p.name}</a>
+                <span class="priority-tag">#${p.vaultId}</span>
+              </div>
+              <div style="display:flex;gap:6px">
+                <span class="phase-pill ${p.phase}">${PHASE_LABELS[p.phase]}</span>
+                <span class="bet-badge">${p.reason}</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  document.getElementById('content').innerHTML = html;
+}
+
+function toggleBet(idx) {
+  const card = document.querySelector(`.bet-card[data-bet="${idx}"]`);
+  if (card) card.classList.toggle('expanded');
+}
+
+// Dark mode toggle
+document.getElementById('dark-toggle').addEventListener('click', () => {
+  const cur = document.documentElement.getAttribute('data-theme');
+  const next = cur === 'dark' ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('dp-theme', next);
+  document.querySelector('#dark-toggle i').className = next === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+});
+document.querySelector('#dark-toggle i').className = document.documentElement.getAttribute('data-theme') === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+
+load();
+</script>
 </body>
 </html>

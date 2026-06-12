@@ -1,0 +1,84 @@
+{
+  "lastUpdated": "2026-06-12",
+  "source": "Vault team 2836-Delivery-Predictions + H1 Outcomes doc 1U7sBoxIVKsd9Rd_sUoELA7NsGr-259oc_BOOF1V81mM",
+  "bets": [
+    {
+      "id": "bet1",
+      "title": "Bet 1: Land DHM Model & Validate Product Unlocks",
+      "icon": "🎯",
+      "color": "#a855f7",
+      "blurb": "Ship DHM to production and run the experiments that lock in display logic."
+    },
+    {
+      "id": "bet2",
+      "title": "Bet 2: Predictions as Platform Primitive",
+      "icon": "🧩",
+      "color": "#3b82f6",
+      "blurb": "Extend predictions beyond checkout into search, discovery, agentic surfaces."
+    },
+    {
+      "id": "bet3",
+      "title": "Bet 3: (Re)Define Promise Strategy",
+      "icon": "🤝",
+      "color": "#06b6d4",
+      "blurb": "Evolve Promise from exclusivity play into broader buyer trust standard."
+    },
+    {
+      "id": "hardening",
+      "title": "DHM Model Hardening & Iteration",
+      "icon": "⚒️",
+      "color": "#f59e0b",
+      "blurb": "Production stability, feature simplification, observability."
+    },
+    {
+      "id": "enablement",
+      "title": "Merchant Enablement",
+      "icon": "📈",
+      "color": "#10b981",
+      "blurb": "Help merchants understand and close shipping performance gaps."
+    }
+  ],
+  "projects": [
+    { "vaultId": 50527, "name": "DHM policy application for surface-specific dates", "bet": "bet1", "priority": "P0", "owner": "Experience Platform", "phase": "release", "status": "on_track", "shipping": "2026-06-09", "note": "Awaiting OK1 to Done" },
+    { "vaultId": 50473, "name": "Delivery predictions baseline and cutoff experiment", "bet": "bet1", "priority": "P0", "owner": "Experience", "phase": "observe", "status": "on_track", "shipping": "2026-06-23", "note": "Covers 5/8/14d windows + automated vs manual" },
+    { "vaultId": 50853, "name": "Buyer-friendly EDD language experiment", "bet": "bet1", "priority": "P0", "owner": "Experience", "phase": "prototype", "status": "on_track", "shipping": null },
+    { "vaultId": null, "name": "Window by merchant type / vertical", "bet": "bet1", "priority": "P1", "owner": "Experience", "phase": "off-vault", "status": "no_project", "shipping": null },
+    { "vaultId": null, "name": "Test specific date vs. date range display", "bet": "bet1", "priority": "P0", "owner": "Experience", "phase": "off-vault", "status": "no_project", "shipping": null },
+    { "vaultId": null, "name": "Range sensitivities (P25-P75 vs. P50-P75)", "bet": "bet1", "priority": "P1", "owner": "Experience", "phase": "off-vault", "status": "no_project", "shipping": null },
+
+    { "vaultId": 50343, "name": "Precomputed Delivery Predictions in Product Loader", "bet": "bet2", "priority": "P0", "owner": "Data Platform", "phase": "build", "status": "on_track", "shipping": null },
+    { "vaultId": 50284, "name": "Precomputed Predictions for Google Shopping", "bet": "bet2", "priority": "P0", "owner": "Experience Platform", "phase": "done", "status": "on_track", "shipping": "2026-04-20", "note": "Was Blocked in original plan" },
+    { "vaultId": 50173, "name": "Delivery Predictions in Catalog API (PoC for Bulk Serving)", "bet": "bet2", "priority": "P0", "owner": "Experience Platform", "phase": "prototype", "status": "at_risk", "shipping": "2026-06-10", "note": "Week 10/10, 2 cancelled Build reviews" },
+    { "vaultId": 50791, "name": "Moving Catalog API Predictions from Precomputed to Live", "bet": "bet2", "priority": "P2", "owner": "Experience Platform", "phase": "prototype", "status": "on_track", "shipping": null },
+    { "vaultId": null, "name": "Live predictions for Checkout MCP (agentic checkouts)", "bet": "bet2", "priority": "P0", "owner": "Experience Platform", "phase": "off-vault", "status": "no_project", "shipping": null },
+    { "vaultId": 49458, "name": "Continuously update delivery predictions throughout order lifecycle", "bet": "bet2", "priority": "P0", "owner": "Experience", "phase": "paused", "status": "paused", "shipping": null, "note": "Regression — was Blocked, now Paused" },
+    { "vaultId": 49171, "name": "Display delivery predictions in Shop app cart", "bet": "bet2", "priority": "P1", "owner": "Experience", "phase": "observe", "status": "on_track", "shipping": null },
+    { "vaultId": 49756, "name": "Delivery Predictions in Merchant Admin", "bet": "bet2", "priority": "P1", "owner": "Experience", "phase": "release", "status": "on_track", "shipping": null },
+    { "vaultId": null, "name": "Buyer-facing predictions in CA / AUS / NZ", "bet": "bet2", "priority": "P1", "owner": "Data Experience Platform", "phase": "off-vault", "status": "no_project", "shipping": null },
+    { "vaultId": null, "name": "Label recommendation engine update", "bet": "bet2", "priority": "P2", "owner": "Experience", "phase": "off-vault", "status": "no_project", "shipping": null },
+
+    { "vaultId": null, "name": "Shop Promise long-term vision and strategy", "bet": "bet3", "priority": "P0", "owner": "Product", "phase": "off-vault", "status": "no_project", "shipping": null },
+    { "vaultId": null, "name": "Merchant value prop: eligibility & benefits", "bet": "bet3", "priority": "P0", "owner": "Product", "phase": "off-vault", "status": "no_project", "shipping": null },
+    { "vaultId": null, "name": "Transition communication to merchants", "bet": "bet3", "priority": "P0", "owner": "Product Design", "phase": "off-vault", "status": "no_project", "shipping": null },
+    { "vaultId": null, "name": "Begin implementation of new Promise program", "bet": "bet3", "priority": "P1", "owner": "Data Experience", "phase": "off-vault", "status": "no_project", "shipping": null },
+
+    { "vaultId": 50391, "name": "Standardize delivery prediction data access, simplify feature stores", "bet": "hardening", "priority": "P0", "owner": "Data Platform", "phase": "build", "status": "on_track", "shipping": null },
+    { "vaultId": 51131, "name": "Drift Detection Across Shipping ML Models", "bet": "hardening", "priority": "P1", "owner": "Data Platform", "phase": "prototype", "status": "on_track", "shipping": null },
+    { "vaultId": 46690, "name": "Flexible Management of Models without Code Deploys", "bet": "hardening", "priority": "P0", "owner": "Platform", "phase": "done", "status": "on_track", "shipping": "prior cycle", "note": "Original plan said Not started" },
+    { "vaultId": 49207, "name": "Deploy DHM at Production Scale with Shared Model Libraries", "bet": "hardening", "priority": "P1", "owner": "Data Platform", "phase": "done", "status": "on_track", "shipping": "prior cycle" },
+    { "vaultId": null, "name": "Continuous training & accuracy iteration", "bet": "hardening", "priority": "P0", "owner": "Data Platform", "phase": "off-vault", "status": "no_project", "shipping": null },
+    { "vaultId": null, "name": "Document model inputs and failure modes", "bet": "hardening", "priority": "P1", "owner": "Data", "phase": "off-vault", "status": "no_project", "shipping": null },
+    { "vaultId": null, "name": "CI validations and E2E testing", "bet": "hardening", "priority": "P1", "owner": "Data Platform", "phase": "off-vault", "status": "no_project", "shipping": null },
+
+    { "vaultId": 47559, "name": "Build advanced reporting and data-driven insights", "bet": "enablement", "priority": "P2", "owner": "Experience", "phase": "observe", "status": "on_track", "shipping": null, "note": "Original plan said Not started" }
+  ],
+  "paused": [
+    { "vaultId": 49458, "name": "Continuous lifecycle predictions", "phase": "paused", "bet": "bet2", "reason": "Paused mid-H1" },
+    { "vaultId": 50718, "name": "Auto-enable predictions on Shop Pay web", "phase": "paused", "bet": "bet1", "reason": "Paused mid-H1" },
+    { "vaultId": 50074, "name": "Decouple raw predictions from policy", "phase": "stopped", "bet": "bet1", "reason": "Replaced by #50527" },
+    { "vaultId": 49209, "name": "Move DHM to Monorepo", "phase": "stopped", "bet": "hardening", "reason": "Stopped — confirm rerouted" },
+    { "vaultId": 48530, "name": "ML model for interpreted predictions", "phase": "stopped", "bet": "bet2", "reason": "Stopped" },
+    { "vaultId": 47734, "name": "Baseline testing & language optimization", "phase": "stopped", "bet": "bet1", "reason": "Replaced by #50473" },
+    { "vaultId": 49216, "name": "Live predictions via product loader (old)", "phase": "stopped", "bet": "bet2", "reason": "Stopped" }
+  ]
+}
